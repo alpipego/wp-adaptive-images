@@ -1,6 +1,6 @@
 <?php
     
-    namespace adaptiveImages;
+    namespace alpipego\adaptiveImages;
 
     class Admin 
     {
