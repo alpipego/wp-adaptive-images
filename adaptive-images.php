@@ -1,19 +1,21 @@
 <?php
 
-    /**
-     * Plugin Name: Adaptive Images for WordPress
-     * Plugin URI: https://github.com/alpipego/
-     * Description: A custom take on responsive images in WordPress
-     * Author: Alex
-     * Version: 1.0.0
-     * Author URI: http://alpipego.com/
-     */
-    
-    defined('ABSPATH') or die();
+namespace alpipego\adaptiveImages;
 
-    include __DIR__ . '/aq_resize.php';
+use QuanDigital\WpLibs\Autload;
 
-    include __DIR__ . '/autoloader.php';
+/**
+ * Plugin Name: Adaptive Images for WordPress
+ * Plugin URI: https://github.com/alpipego/wp-adaptive-images
+ * Description: A custom take on adaptive images in WordPress
+ * Author: alpipego
+ * Version: 1.0.0
+ * Author URI: http://alpipego.com/
+ * License: MIT
+ */
+
+new Autoload(__DIR__, __NAMESPACE__);
+
 
     function ai_image($id)
     {
