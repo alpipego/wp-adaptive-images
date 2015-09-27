@@ -1,0 +1,39 @@
+{
+    "name": "alpipego/adaptive-images",
+    "description": "A custom take on adaptive images from flickr/unsplash",
+    "license": "MIT",
+    "type": "wordpress-plugin",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "dan-coulter/phpflickr",
+                "version": "1.0.0",
+                "source": {
+                    "type": "git",
+                    "reference": "origin/master",
+                    "url": "git@github.com:dan-coulter/phpflickr.git"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "syamilmj/aqua-resizer",
+                "version": "1.0.0",
+                "source": {
+                    "type": "git",
+                    "reference": "origin/master",
+                    "url": "git@github.com:syamilmj/Aqua-Resizer.git"
+                }
+            }
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "composer/installers": "~1.0",
+        "quandigital/wp-libs": "~1.0",
+        "dan-coulter/phpflickr": "*",
+        "syamilmj/aqua-resizer": "*"
+    }
+}
