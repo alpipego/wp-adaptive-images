@@ -1,0 +1,7 @@
+add an image url/id --> decide if id or url
+get the licence --> use or throw exception
+get the image/data from flickr 
+inject the image container size --> width: 100%, padding-bottom: 52.65%
+
+make an ajax call and check the nearest image size
+
