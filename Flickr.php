@@ -2,6 +2,8 @@
     
     namespace alpipego\adaptiveImages;
 
+    use phpFlickr;
+
     class Flickr
     {
         public $id;
@@ -19,6 +21,8 @@
             $this->id = $this->idOrUrl($idOrUrl);
 
             // $this->imageId = (int) $this->parseUrl();
+            $this->api_key = \get_option('ai_flickr_api');
+            $this->api_secret = \get_option('ai_flickr_api_secret');
 
             $this->info = $this->getPhotoInfo();
         }
