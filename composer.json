@@ -38,8 +38,8 @@
     },
     "autoload": {
         "classmap": [
-            "vendor/dan_coulter/phpflickr/", 
-            "vendor/syamilmj/aqua-resizer"
+            "../../../vendor/dan_coulter/phpflickr/", 
+            "../../../vendor/syamilmj/aqua-resizer"
         ]
     }
 }
