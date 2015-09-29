@@ -35,5 +35,11 @@
         "quandigital/wp-libs": "~1.0",
         "dan-coulter/phpflickr": "*",
         "syamilmj/aqua-resizer": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "vendor/dan_coulter/phpflickr/", 
+            "vendor/syamilmj/aqua-resizer"
+        ]
     }
 }
