@@ -10,27 +10,49 @@
         public $license;
         public $url;
         private $f;
-        private $api_key;
-        private $api_secret;
+        private $apiKey;
+        private $apiSecret;
         private $info;
 
-        function __construct($idOrUrl)
+        public function __construct($idOrUrl)
         {
-            $this->connection();
+            $this->apiKey = \get_field('ai_flickr_api_key', 'option');
+            $this->apiSecret = \get_field('ai_flickr_api_secret', 'option'); 
 
-            $this->id = $this->idOrUrl($idOrUrl);
+            $this->id = (new Admin())->idOrUrl($idOrUrl);
 
-            // $this->imageId = (int) $this->parseUrl();
-            $this->api_key = \get_option('ai_flickr_api');
-            $this->api_secret = \get_option('ai_flickr_api_secret');
-
-            $this->info = $this->getPhotoInfo();
+            if ($this->id && !($this->id instanceof \Exception)) {
+                $this->connection();
+                $this->info = $this->getPhotoInfo();
+            } else {
+                throw new \Exception('Please provide a valid url or image id');
+            }
         }
 
-        function connection()
+        protected function connection()
         {
-            $this->f = new phpFlickr($this->api_key, $this->api_secret);
-            $this->f->enableCache('db', 'mysql://'.DB_USER.':'.DB_PASSWORD.'@'.DB_HOST.'/'.DB_NAME, 600);
+            if (!empty($this->apiKey) && !empty($this->apiSecret)) {
+                $this->f = new phpFlickr($this->apiKey, $this->apiSecret);
+                $this->f->enableCache('db', 'mysql://'.DB_USER.':'.DB_PASSWORD.'@'.DB_HOST.'/'.DB_NAME, $this->cacheAge());
+            } else {
+                throw new \Exception('Please provide a flickr API key and secret');
+            }
+        }
+
+        private function cacheAge()
+        {
+            if ($env = (defined('WP_STAGE') || defined('WP_ENV'))) {
+                switch ($env) {
+                    case 'local':
+                        return 600;
+                        break;
+                    default:
+                        return 3600;
+                        break;
+                }
+            } else {
+                return 3600;
+            }
         }
 
         function getSizes()
@@ -38,7 +60,7 @@
             return $this->f->photos_getSizes($this->id);
         }
 
-        function getPhotoInfo()
+        protected function getPhotoInfo()
         {
             $info = $this->f->photos_getInfo($this->id);
 
@@ -60,12 +82,9 @@
                     }
                 }
             } else {
-                return 'not allowed';
-            } 
-            /*else {
-                throw new \Exception('You can\'t use this license on this page. Please choose another image.', 1);
+                throw new \Exception('All rights reserved. Please choose another image.');
                 
-            }*/
+            }
         }
 
         function getImage()
@@ -79,8 +98,10 @@
 
         function getUrl()
         {
-            if (in_array('photopage', $this->info['urls']['url'][0])) {
-                return $this->info['urls']['url'][0]['_content'];
+            if (is_array($this->info['urls']['url'])) {
+                if (in_array('photopage', $this->info['urls']['url'][0])) {
+                    return $this->info['urls']['url'][0]['_content'];
+                }
             }
         }
 
