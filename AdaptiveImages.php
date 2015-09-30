@@ -9,44 +9,7 @@ class AdaptiveImages
         \add_action('wp_ajax_ai_load_image', [$this, 'ai_flickr_ajax']);
         \add_action('wp_ajax_nopriv_ai_load_image', [$this, 'ai_flickr_ajax']);
 
-        \add_filter('acf/validate_value/name=flickr_url_id', [$this, 'ai_validate_flickr_url_id'], 10, 4);
-    }
-
-    function ai_image($id)
-    {
-        $image = new Image($id);
-        return $image->ratio;
-    }
-
-    function ai_resize($id, $ratio)
-    {
-        $resize = new Resize($id);
-        return $resize->resizeByRatio($ratio);
-    }
-
-    function ai_flickr_test($url)
-    {
-        $flickr = new Flickr($url);
-        return $flickr;
-    }
-
-    function ai_flickr($url)
-    {
-        $flickr = new Flickr($url);
-        return $flickr->getImage();
-    }
-
-    function ai_admin($value)
-    {
-        $valid = true;
-        $admin = new Admin();
-        
-        try {
-            $admin->idOrUrl($value);
-        } catch (Exception $e) {
-            $valid = $e->getMessage();
-        }
-        return $valid;
+        \add_filter('acf/validate_value/name=ai_url_id', [$this, 'ai_validate_flickr_url_id'], 10, 4);
     }
 
     function ai_flickr_ajax()
@@ -85,5 +48,7 @@ class AdaptiveImages
         
         // return
         return $valid;
-    }    
+    }
+
+    
 }
