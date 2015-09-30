@@ -1,6 +1,6 @@
 <?php
     
-namespace alpipego\adaptiveImages;
+namespace Alpipego\AdaptiveImages;
 
 use QuanDigital\WpLib\Helpers;
 
@@ -83,6 +83,6 @@ class Admin
 
     function getUnsplashImage()
     {
-        
+
     }
 }

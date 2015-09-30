@@ -1,6 +1,6 @@
 <?php
 
-namespace alpipego\adaptiveImages;
+namespace Alpipego\AdaptiveImages;
 
 class AdaptiveImages
 {
@@ -50,5 +50,5 @@ class AdaptiveImages
         return $valid;
     }
 
-    
+
 }

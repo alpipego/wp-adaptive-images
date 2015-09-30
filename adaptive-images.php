@@ -1,6 +1,6 @@
 <?php
 
-namespace alpipego\adaptiveImages;
+namespace Alpipego\AdaptiveImages;
 
 use QuanDigital\WpLib\Autoload;
 
