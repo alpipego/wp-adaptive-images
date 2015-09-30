@@ -18,12 +18,11 @@
             $this->url = $this->image[0];
             $this->width = $this->image[1];
             $this->height = $this->image[2];
-            $this->getRatio();
+            $this->ratio = $this->getRatio();
         }
 
         function getRatio()
         {
-            $this->ratio = $this->width/$this->height;
-            return $this->ratio;
+            return $this->width/$this->height;
         }
     }
