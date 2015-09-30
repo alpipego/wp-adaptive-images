@@ -8,6 +8,7 @@
         "composer/installers": "~1.0",
         "quandigital/wp-libs": "~1.0",
         "dan-coulter/phpflickr": "*",
-        "syamilmj/aqua-resizer": "*"
+        "syamilmj/aqua-resizer": "*",
+        "crewlabs/unsplash": "~1.0"
     }
 }
