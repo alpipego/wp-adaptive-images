@@ -1,77 +1,112 @@
-adaptiveImages = {
-    checkUrlId: function(idOrUrl) {
+var adaptiveImages = function(target, id, authorUrl, licenseUrl, authorName) {
+
+    this.target = target;
+    this.id = id;
+    this.authorUrl = authorUrl;
+    this.licenseUrl = licenseUrl;
+    this.authorName = authorName;
+
+    this.checkUrlId = function(url) {
+        var ai = this;
         this.genericGet(
             {
-                'action': 'ai_check_url_id',
-                'idOrUrl': idOrUrl
+                'action': 'ai_validate_url',
+                'url': url
             },
             function(response) {
-                adaptiveImages.adminNoticeSuccess();
-                adaptiveImages.getFlickrImage(response);
+                ai.adminNoticeSuccess();
+                ai.id.val(response.service+';'+response.id);
+                ai.getImage(response);
             }
         );
-    },
+    };
 
-    adminNoticeError: function(e) {
+    this.adminNoticeError = function(e) {
         var $ = jQuery;
         $(this.target).siblings('.error').remove();
-        if (typeof this.valid !== 'undefined' && this.valid.attr('checked') === 'checked') {
-            this.valid.click();
-        };
+        this.hideElements();
         $(this.target).parent().append($('<div>').addClass('error').text(e.msg));
-    },
+    };
 
-    adminNoticeSuccess: function() {
+    this.adminNoticeSuccess = function() {
         jQuery(this.target).siblings('.error').remove();
-    },
+    };
 
-    getFlickrImage: function(id) {
+    this.hideElements = function() {
+        this.authorUrl.val('');
+        this.authorUrl.closest('.acf-field').hide();
+        this.licenseUrl.val('');
+        this.licenseUrl.closest('.acf-field').hide();
+        this.authorName.val('');
+        this.authorName.closest('.acf-field').hide();
+    };
+
+    this.getImage = function(image) {
+        var ai = this;
+
         this.genericGet(
             {
                 'action': 'ai_get_image',
-                'id': id
+                'image': image
             },
-            this.valid.click()
-        );
-    },
+            function(response) {
+                var $ = jQuery;
 
-    genericGet: function(data, sucessCallback) {
+                if (ai.target.closest('.ai-preview-image') && ai.target.closest('.ai-preview-image').length > 0) {
+                    ai.target.closest('.ai-preview-image img').attr('src', response.image);
+                } else {
+                    $(ai.target).closest('.acf-field').after($('<div>').addClass('ai-preview-image acf-field').html('<img src="'+response.image+'" width="100%" />'));
+                }
+                var url = $(ai.target).val();
+                $(ai.target)
+                    .hide()
+                    .before($('<a>').attr({
+                            href: url,
+                            target: '_blank'
+                        }).text('View Original')
+                    );
+
+                ai.licenseUrl.val(response.licenseUrl);
+                ai.licenseUrl.parents('.acf-field').show();
+                ai.authorUrl.val(response.userUrl);
+                ai.authorUrl.parents('.acf-field').show();
+                ai.authorName.val(response.userName);
+                ai.authorName.parents('.acf-field').show();
+            }
+        );
+    };
+
+    this.genericGet = function(data, sucessCallback) {
         var $ = jQuery;
-        $.get(
-            ajaxurl, 
+        var ai = this;
+        $(document)
+            .on('ajaxStart.thisCall', function () {
+                $.each($('.spinner.acf-field'), function() {
+                    $(this).remove();
+                });
+                $(ai.target).closest('.acf-field').after($('<div>').addClass('spinner acf-field is-active'));
+            })
+            .on('ajaxStop.thisCall', function () {
+                $('.spinner').remove();
+            });
+
+        $(document).unbind('.thisCall');
+
+        $.getJSON(
+            ajaxurl,
             data
         )
-        .then(function(response) {
-            response = $.parseJSON(response);
-            if (response.error) {
-                return $.Deferred().reject(response.error)
-            } else {
-                return response;
-            }
-        })
-        .done(sucessCallback)
-        .fail(function(err) {
-            adaptiveImages.adminNoticeError(err)
-        });    
-    }
+            .then(function(response) {
+                ai.hideElements();
+                if (response.error) {
+                    return $.Deferred().reject(response.error)
+                } else {
+                    return response;
+                }
+            })
+            .done(sucessCallback)
+            .fail(function(err) {
+                ai.adminNoticeError(err)
+            });
+    };
 }
-// $('.image-container').each(function() {
-//     var id = 'img-cont-'+imgIndex++;
-//     var imgCont = $(this).attr('id', id);
-//     var data = {
-//         'action': 'ai_check_url_id',
-//         'id': $(this).data('image-id'),
-//         'containerWidth': $(this).width(),
-//         'pixelRatio': window.devicePixelRatio || Math.round(window.screen.availWidth / document.documentElement.clientWidth)
-//     }
-    
-//     // console.log([ajaxurl, data]);    
-//     $.post(ajaxurl, data, function(response) {
-//         response = $.parseJSON(response);
-//         $('<img>').attr('src', response).on('load', function() {
-//             imgCont.append(
-//                 $('<div>').addClass('image').css('background-image', 'url(data:image/jpg;base64,'+$(this).attr('src')+')')
-//             );
-//         });
-//     });
-// });

@@ -3,6 +3,7 @@
 namespace Alpipego\AdaptiveImages;
 
 use QuanDigital\WpLib\Autoload;
+use Alpipego\AdaptiveImages\Admin\Plugin;
 
 /**
  * Plugin Name: Adaptive Images for WordPress

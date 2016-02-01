@@ -3,12 +3,17 @@
     "description": "A custom take on adaptive images from flickr/unsplash",
     "license": "MIT",
     "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "Alpipego\\AdaptiveImages\\": "src/"
+        }
+    },
     "require": {
         "php": ">=5.5",
         "composer/installers": "~1.0",
         "quandigital/wp-libs": "~1.0",
         "dan-coulter/phpflickr": "*",
         "syamilmj/aqua-resizer": "*",
-        "crewlabs/unsplash": "~1.0"
+        "crewlabs/unsplash": "1.0.3"
     }
 }
