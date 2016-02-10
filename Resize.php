@@ -1,6 +1,6 @@
 <?php
     
-    namespace alpipego\adaptiveImages;
+    namespace Alpipego\AdaptiveImages;
 
     class Resize
     {
@@ -23,6 +23,6 @@
                 $ratio = $ratioArr[0]/$ratioArr[1];
             }
 
-            return aq_resize($this->image->url, $this->image->width, round($ratio * $this->image->width), true);
+            return \aq_resize($this->image->url, $this->image->width, round($ratio * $this->image->width), true);
         }
     }
