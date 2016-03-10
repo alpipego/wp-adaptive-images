@@ -27,25 +27,8 @@ class Flickr extends AbstractService
     {
         if (!empty($this->apiKey) && !empty($this->apiSecret)) {
             $this->f = new phpFlickr($this->apiKey, $this->apiSecret);
-            $this->f->enableCache('db', 'mysql://'.DB_USER.':'.DB_PASSWORD.'@'.DB_HOST.'/'.DB_NAME, $this->cacheAge());
         } else {
             throw new \Exception('Please provide a flickr API key and secret');
-        }
-    }
-
-    private function cacheAge()
-    {
-        if ($env = (defined('WP_STAGE') || defined('WP_ENV'))) {
-            switch ($env) {
-                case 'local':
-                    return 600;
-                    break;
-                default:
-                    return 3600;
-                    break;
-            }
-        } else {
-            return 3600;
         }
     }
 

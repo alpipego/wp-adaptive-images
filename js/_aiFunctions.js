@@ -16,6 +16,7 @@ var adaptiveImages = function(target, id, authorUrl, licenseUrl, authorName) {
             function(response) {
                 ai.adminNoticeSuccess();
                 ai.id.val(response.service+';'+response.id);
+                console.log({'service': response.service, 'id': response.id});
                 ai.getImage(response);
             }
         );
@@ -81,6 +82,7 @@ var adaptiveImages = function(target, id, authorUrl, licenseUrl, authorName) {
         var ai = this;
         $(document)
             .on('ajaxStart.thisCall', function () {
+                console.log('ajax call');
                 $.each($('.spinner.acf-field'), function() {
                     $(this).remove();
                 });
@@ -88,9 +90,9 @@ var adaptiveImages = function(target, id, authorUrl, licenseUrl, authorName) {
             })
             .on('ajaxStop.thisCall', function () {
                 $('.spinner').remove();
+                $(document).unbind('.thisCall');
             });
 
-        $(document).unbind('.thisCall');
 
         $.getJSON(
             ajaxurl,
