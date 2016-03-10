@@ -25,7 +25,7 @@ class Cache
         if ((defined('WP_STAGE') || defined('WP_ENV')) == 'local') {
             return 3600 + mt_rand(0, 1200);
         } else {
-            return (3600 * 24) + mt_rand(0, 3600);
+            return (3600 * 24 * 30) + mt_rand(0, 3600 * 24);
         }
     }
 
@@ -33,10 +33,7 @@ class Cache
     {
         $key = $this->makeKey($request);
 
-        $cacheResult = $this->cache->get($key);
-
-        if ($cacheResult) {
-            // $this->cache->delete($key);
+        if ($cacheResult = $this->cache->get($key)) {
             return $cacheResult;
         }
 
