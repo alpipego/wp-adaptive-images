@@ -3,8 +3,7 @@
 namespace Alpipego\AdaptiveImages\Admin;
 
 use QuanDigital\WpLib\Helpers;
-use Alpipego\AdaptiveImages\Cache\Cache;
-
+use Alpipego\AdaptiveImages\Image\Image;
 
 class Admin
 {
@@ -70,36 +69,13 @@ class Admin
 
     function ajaxGetImage()
     {
-        $serviceClass = 'Alpipego\\AdaptiveImages\\Services\\' . ucfirst($_GET['image']['service']);
-        $service = new $serviceClass($_GET['image']['id']);
-
-        $cache = new Cache();
         $request = [
             'id' => $_GET['image']['id'],
             'service' => $_GET['image']['service'],
-            'width' => 'admin',
+            'width' => 'small',
         ];
-        $result = $cache->get($_GET);
 
-        if (!$result) {
-            try {
-                $result = $service->getImageDetails();
-                $result['image'] = $service->getSize('small');
-                $cache->set($_GET, $result);
-            } catch (\Exception $e) {
-                $msg = $e->getMessage();
-                if (empty($msg)) {
-                    $msg = 'Some undefined error occurred';
-                }
-                $result = [
-                    'error' => [
-                        'msg' => $msg
-                    ],
-                ];
-            }
-        }
-
-        echo json_encode($result);
+        echo json_encode(Image::get($request));
         wp_die();
     }
 
